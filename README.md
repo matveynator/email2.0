@@ -1,4 +1,5 @@
 
+<img src="https://repository-images.githubusercontent.com/441401762/e65ab957-696c-4775-966b-6611df381455" align="left" width="200">
 # RIGEL
 Secure, fast and free email 2.0 server.
 
