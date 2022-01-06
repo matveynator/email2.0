@@ -6,6 +6,7 @@ import (
   "crypto/tls"
   "rigel/smtp"
   "rigel/smtpd"
+	"os"
 )
 
 var sslCertificatePem = []byte(`-----BEGIN CERTIFICATE-----
@@ -72,7 +73,7 @@ JUa7rkQMqX8VjtVXwyHMDe+r60OrNrO5iOJxcoJwJYXOHhOQ9QMHUUMKn5WHp3ov
 -----END PRIVATE KEY-----`)
 
 //optional arguments to proxy all incoming mail to smtp server
-var ListenIP, ListenPort, Domain, SmartHost, SmartPort string
+var ListenIP, ListenPort, Domain, SmartHost, SmartPort, Version string
 
 func AuthUser (peer smtpd.Peer, username, password string ) bool {
   log.Println("login: " + username)
@@ -110,6 +111,7 @@ func handler(peer smtpd.Peer, env smtpd.Envelope) error {
 
 func main() {
 
+	flagVersion := flag.Bool("version", false, "Output version information")
   flag.StringVar( &ListenIP, "listenip", "0.0.0.0", "Hostname or IP to listen on, 0.0.0.0 is default.")
   flag.StringVar( &ListenPort, "listenport", "25","Port to listen, 25 SMTP is default.")
   flag.StringVar( &SmartHost, "smarthost", "127.0.0.1", "Hostname or IP of the smtp smarthost to forward all incoming mail to, 127.0.0.1 is default.")
@@ -117,7 +119,15 @@ func main() {
   flag.StringVar( &Domain, "domain", "localhost", "Domain to receive mail.")
   flag.Parse()
 
-  log.Println("Rigel E-mail 2.0 is listening on "+ListenIP+":"+ListenPort+ " as "+Domain+" and forwarding all mail to "+SmartHost+":"+SmartPort)
+	if *flagVersion  {
+		if Version != "" {
+			log.Println("Version:", Version)
+		}
+		os.Exit(0)
+	}
+
+	log.Println("Rigel E-mail 2.0 ver:"+Version+" is listening on "+ListenIP+":"+ListenPort+ " as "+Domain+" and forwarding all mail to "+SmartHost+":"+SmartPort)
+
   server := &smtpd.Server{
     WelcomeMessage:   "Rigel E-mail 2.0 ESMTP ready.",
     Handler:          handler,
