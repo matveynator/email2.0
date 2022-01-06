@@ -401,10 +401,35 @@ func (session *session) handleDATA(cmd command) {
 			fmt.Println(err)
 		}
 		mailHeader := mailData.Header
-		fmt.Println("Reply-To:", mailHeader.Get("Reply-To"))
-		fmt.Println("From:", mailHeader.Get("From"))
-		fmt.Println("To:", mailHeader.Get("To"))
-		fmt.Println("Subject:", mailHeader.Get("Subject"))
+		//fmt.Println("Reply-To:", mailHeader.Get("Reply-To"))
+		//fmt.Println("From:", mailHeader.Get("From"))
+		//fmt.Println("To:", mailHeader.Get("To"))
+		//fmt.Println("Subject:", mailHeader.Get("Subject"))
+
+		addr, err := parseAddress(mailHeader.Get("From"))
+		if err != nil {
+			session.reply(502, "Malformed FROM e-mail address in BODY of the message.")
+			return
+		}
+		components := strings.Split(addr, "@")
+		domain := components[1]
+		if (session.peer.Authenticated!=true) {
+			var valid bool
+			valid, err = session.CheckIPIsAllowed(session.peer.Addr.(*net.TCPAddr).IP.String(), domain)
+			if err!=nil {
+				session.reply(451, "Temporary server DNS error. Please try again later. Error: " + err.Error())
+				session.close()
+				return
+			} else {
+				if valid!=true {
+					session.reply(502, "Error: SPF DNS check - you are not alowed to send mail FROM this domain:" + domain + ". Please auth or fix SPF DNS record for " + domain + " domain.")
+					session.close()
+					return
+				}
+			}
+		}
+
+
 
     if err := session.deliver(); err != nil {
       session.error(err)
