@@ -25,4 +25,4 @@ do
 	done
 done
 
-rsync -avP --delete ../download root@rigel.email:/home/rigel/public_html/
+rsync -avP ../download root@rigel.email:/home/rigel/public_html/
