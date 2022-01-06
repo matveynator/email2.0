@@ -14,13 +14,13 @@ do
 		[ "$os" == "darwin" ] && target_os_name="mac"
 		
 		mkdir -p ../download/${version}/${target_os_name}/${arch}
-		GOOS=${os} GOARCH=${arch} go build -ldflags "-X main.Version=${version}" -o ../downloads/${version}/${target_os_name}/${arch}/${execution_file} ../rigel.go &> /dev/null
+		GOOS=${os} GOARCH=${arch} go build -ldflags "-X main.Version=${version}" -o ../download/${version}/${target_os_name}/${arch}/${execution_file} ../rigel.go &> /dev/null
 		if [ "$?" != "0" ]
 		#if compilation failed - remove folders - else copy config file.
 		then
 		  rm -rf ../download/${version}/${target_os_name}/${arch}
 		else
-		  echo "GOOS=${os} GOARCH=${arch} go build -ldflags "-X main.Version=${version}" -o ../downloads/${version}/${target_os_name}/${arch}/${execution_file} ../rigel.go"
+		  echo "GOOS=${os} GOARCH=${arch} go build -ldflags "-X main.Version=${version}" -o ../download/${version}/${target_os_name}/${arch}/${execution_file} ../rigel.go"
 		fi
 	done
 done
