@@ -20,7 +20,7 @@ do
 		then
 		  rm -rf ../downloads/${version}/${target_os_name}/${arch}
 		else
-		  echo "GOOS=${os} GOARCH=${arch} go build -ldflags "-X rigel/rigel.Version=${version}" -o ../downloads/${version}/${target_os_name}/${arch}/${execution_file} ../rigel.go"
+		  echo "GOOS=${os} GOARCH=${arch} go build -ldflags "-X main.Version=${version}" -o ../downloads/${version}/${target_os_name}/${arch}/${execution_file} ../rigel.go"
 		fi
 	done
 done
