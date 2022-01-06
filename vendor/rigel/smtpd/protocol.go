@@ -411,49 +411,23 @@ func (session *session) handleDATA(cmd command) {
 			session.reply(502, "Malformed FROM e-mail address in BODY of the message.")
 			return
 		}
-		components := strings.Split(fromAddr, "@")
-		domain := components[1]
+		componentsFromAddr := strings.Split(fromAddr, "@")
+		fromAddrDomain := componentsFromAddr[1]
 		if (session.peer.Authenticated!=true) {
 			var valid bool
-			valid, err = session.CheckIPIsAllowed(session.peer.Addr.(*net.TCPAddr).IP.String(), domain)
+			valid, err = session.CheckIPIsAllowed(session.peer.Addr.(*net.TCPAddr).IP.String(), fromAddrDomain)
 			if err!=nil {
 				session.reply(451, "Temporary server DNS error. Please try again later. Error: " + err.Error())
 				session.close()
 				return
 			} else {
 				if valid!=true {
-					session.reply(502, "Error: SPF DNS check - you are not alowed to send mail FROM this domain:" + domain + ". Please auth or fix SPF DNS record for " + domain + " domain.")
+					session.reply(502, "Error: SPF DNS check - you are not alowed to send mail FROM this domain:" + fromAddrDomain + ". Please auth or fix SPF DNS record for " + fromAddrDomain + " domain.")
 					session.close()
 					return
 				}
 			}
 		}
-
-		replyToAddr, err := parseAddress(mailHeader.Get("Reply-To"))
-		if err != nil {
-			session.reply(502, "Malformed Reply-To e-mail address in BODY of the message.")
-			return
-		}
-		components := strings.Split(replyToAddr, "@")
-		domain := components[1]
-		if (session.peer.Authenticated!=true) {
-			var valid bool
-			valid, err = session.CheckIPIsAllowed(session.peer.Addr.(*net.TCPAddr).IP.String(), domain)
-			if err!=nil {
-				session.reply(451, "Temporary server DNS error. Please try again later. Error: " + err.Error())
-				session.close()
-				return
-			} else {
-				if valid!=true {
-					session.reply(502, "Error: SPF DNS check - you are not alowed to send mail with Reply-To this domain:" + domain + ". Please auth or fix SPF DNS record for " + domain + " domain.")
-					session.close()
-					return
-				}
-			}
-		}
-
-
-
 
 		if err := session.deliver(); err != nil {
 			session.error(err)
