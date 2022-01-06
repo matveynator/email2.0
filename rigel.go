@@ -4,8 +4,8 @@ import (
   "log"
   "flag"
   "crypto/tls"
-  "email20/smtp"
-  "email20/smtpd"
+  "rigel/smtp"
+  "rigel/smtpd"
 )
 
 var sslCertificatePem = []byte(`-----BEGIN CERTIFICATE-----
