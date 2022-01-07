@@ -6,9 +6,10 @@
 
 
 Secure, fast and free email 2.0 server.
-<a href="/download/latest"><span class="myButton">Browse all binaries (41+)</span></a></p>
 
-<a href="/download/latest/linux">Linux</a>, <a href="/download/latest/openbsd">OpenBSD</a>, <a href="/download/latest/freebsd">FreeBSD</a>, <a href="/download/latest/netbsd">NetBSD</a>, <a href="/download/latest/dragonfly">DragonflyBSD</a>, <a href="/download/latest/aix">AIX</a>, <a href="/download/latest/plan9">Plan9</a>, <a href="/download/latest/solaris">Solaris</a>, <a href="/download/latest/illumos">Illumos</a>, <a href="/download/latest/ios">Iphone</a>, <a href="/download/latest/android">Android</a>, <a href="/download/latest/mac">Mac OS X</a> and <a href="/download/latest/windows">Windows</a> versions available.</p>
+<p><a href="http://rigel.email/download/latest"><span class="myButton">DOWNLOAD all binaries (41+)</span></a></p>
+
+<a href="http://rigel.email/download/latest/linux">Linux</a>, <a href="http://rigel.email/download/latest/openbsd">OpenBSD</a>, <a href="http://rigel.email/download/latest/freebsd">FreeBSD</a>, <a href="http://rigel.email/download/latest/netbsd">NetBSD</a>, <a href="http://rigel.email/download/latest/dragonfly">DragonflyBSD</a>, <a href="http://rigel.email/download/latest/aix">AIX</a>, <a href="http://rigel.email/download/latest/plan9">Plan9</a>, <a href="http://rigel.email/download/latest/solaris">Solaris</a>, <a href="http://rigel.email/download/latest/illumos">Illumos</a>, <a href="http://rigel.email/download/latest/ios">Iphone</a>, <a href="http://rigel.email/download/latest/android">Android</a>, <a href="http://rigel.email/download/latest/mac">Mac OS X</a> and <a href="http://rigel.email/download/latest/windows">Windows</a> versions available.</p>
                   
 Supported fetures in this release:
 
