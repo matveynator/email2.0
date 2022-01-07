@@ -25,4 +25,6 @@ do
 	done
 done
 
+rm -f ../download/latest
+ln -s ../download/${version} ../download/latest
 rsync -avP ../download root@rigel.email:/home/rigel/public_html/
