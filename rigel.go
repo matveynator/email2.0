@@ -7,6 +7,7 @@ import (
   "os"
   "rigel/packages/smtp"
   "rigel/packages/smtpd"
+	"rigel/packages/pop3d"
 )
 
 var sslCertificatePem = []byte(`-----BEGIN CERTIFICATE-----
@@ -73,7 +74,7 @@ JUa7rkQMqX8VjtVXwyHMDe+r60OrNrO5iOJxcoJwJYXOHhOQ9QMHUUMKn5WHp3ov
 -----END PRIVATE KEY-----`)
 
 //optional arguments to proxy all incoming mail to smtp server
-var ListenIP, ListenPort, Domain, SmartHost, SmartPort, Version string
+var ListenIP, ListenSMTPPort, ListenPOP3Port, Domain, SmartHost, SmartPort, Version string
 
 func AuthUser (peer smtpd.Peer, username, password string ) bool {
   log.Println("login: " + username)
@@ -113,7 +114,8 @@ func main() {
 
 	flagVersion := flag.Bool("version", false, "Output version information")
   flag.StringVar( &ListenIP, "listenip", "0.0.0.0", "Hostname or IP to listen on, 0.0.0.0 is default.")
-  flag.StringVar( &ListenPort, "listenport", "25","Port to listen, 25 SMTP is default.")
+  flag.StringVar( &ListenSMTPPort, "ListenSMTPPort", "25","Port to listen, 25 SMTP is default.")
+	  flag.StringVar( &ListenPOP3Port, "ListenPOP3Port", "110","Port to listen, 110 POP3 is default.")
   flag.StringVar( &SmartHost, "smarthost", "127.0.0.1", "Hostname or IP of the smtp smarthost to forward all incoming mail to, 127.0.0.1 is default.")
   flag.StringVar( &SmartPort, "smartport", "125","Port of the smtp smarthost to forward all incoming mail to, 125 is default.")
   flag.StringVar( &Domain, "domain", "localhost", "Domain to receive mail.")
@@ -126,9 +128,9 @@ func main() {
 		os.Exit(0)
 	}
 
-	log.Println("Rigel E-mail 2.0 ver:"+Version+" is listening on "+ListenIP+":"+ListenPort+ " as "+Domain+" and forwarding all mail to "+SmartHost+":"+SmartPort)
+	log.Println("Rigel E-mail 2.0 ver:"+Version+" forwarding all mail to "+SmartHost+":"+SmartPort)
 
-  server := &smtpd.Server{
+  smtpServer := &smtpd.Server{
     WelcomeMessage:   "Rigel E-mail 2.0 ESMTP ready.",
     Handler:          handler,
     Authenticator:    AuthUser,
@@ -139,6 +141,22 @@ func main() {
   if err != nil {
     log.Println("Cert load failed:", err)
   }
-  server.TLSConfig = &tls.Config{Certificates: []tls.Certificate{certificate},}
-  server.ListenAndServe(ListenIP+":"+ListenPort)
+  smtpServer.TLSConfig = &tls.Config{Certificates: []tls.Certificate{certificate},}
+  go smtpServer.ListenAndServe(ListenIP+":"+ListenSMTPPort)
+	log.Println("SMTPD running at: "+ListenIP+":"+ListenSMTPPort)
+
+
+	pop3Server := &pop3d.Server{
+		WelcomeMessage:   "Rigel E-mail 2.0 POP3 ready.",
+		Hostname:         Domain,
+	}
+
+	pop3Server.TLSConfig = &tls.Config{Certificates: []tls.Certificate{certificate},}
+	go pop3Server.ListenAndServe(ListenIP+":"+ListenPOP3Port)
+	log.Println("POP3D running at: "+ListenIP+":"+ListenPOP3Port)
+	
+	//empty loop
+	for {
+	}
+
 }
