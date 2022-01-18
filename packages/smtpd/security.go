@@ -9,7 +9,7 @@ import (
   "github.com/miekg/dns"
   "log"
   "net"
-  "rigel/m/v2/smtp"
+  "rigel/packages/smtp"
   "strings"
 )
 

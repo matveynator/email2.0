@@ -5,8 +5,8 @@ import (
   "flag"
   "log"
   "os"
-  "rigel/m/v2/smtp"
-  "rigel/m/v2/smtpd"
+  "rigel/packages/smtp"
+  "rigel/packages/smtpd"
 )
 
 var sslCertificatePem = []byte(`-----BEGIN CERTIFICATE-----
@@ -137,7 +137,7 @@ func main() {
 
   certificate, err := tls.X509KeyPair(sslCertificatePem, sslKeyPem)
   if err != nil {
-    log.Println("Cert load failed: %v", err)
+    log.Println("Cert load failed:", err)
   }
   server.TLSConfig = &tls.Config{Certificates: []tls.Certificate{certificate},}
   server.ListenAndServe(ListenIP+":"+ListenPort)
