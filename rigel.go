@@ -1,12 +1,12 @@
 package main
 
 import (
-  "log"
-  "flag"
   "crypto/tls"
-  "rigel/smtp"
-  "rigel/smtpd"
-	"os"
+  "flag"
+  "log"
+  "os"
+  "rigel/m/v2/smtp"
+  "rigel/m/v2/smtpd"
 )
 
 var sslCertificatePem = []byte(`-----BEGIN CERTIFICATE-----
