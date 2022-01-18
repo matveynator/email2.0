@@ -4,13 +4,13 @@
 package smtpd
 
 import (
-  "net"
-  "log"
-  "strings"
+  "crypto/tls"
   "errors"
   "github.com/miekg/dns"
-  "crypto/tls"
-  "rigel/smtp"
+  "log"
+  "net"
+  "rigel/packages/smtp"
+  "strings"
 )
 
 

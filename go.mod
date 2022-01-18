@@ -1,4 +1,4 @@
-module rigel/m/v2
+module rigel
 
 go 1.17
 
