@@ -8,6 +8,7 @@ import (
   "rigel/packages/smtp"
   "rigel/packages/smtpd"
 	"rigel/packages/pop3d"
+	"rigel/packages/mailbox"
 )
 
 var sslCertificatePem = []byte(`-----BEGIN CERTIFICATE-----
@@ -154,6 +155,15 @@ func main() {
 	pop3Server.TLSConfig = &tls.Config{Certificates: []tls.Certificate{certificate},}
 	go pop3Server.ListenAndServe(ListenIP+":"+ListenPOP3Port)
 	log.Println("POP3D running at: "+ListenIP+":"+ListenPOP3Port)
+
+
+	_, err = mailbox.GetNewMail("matvey@copters.ru", "inbox")
+	if err != nil {
+		log.Println(err)
+	} else {
+		log.Println("some data available in matvey@copters.ru mailbox")
+	}
+
 	
 	//empty loop
 	for {
